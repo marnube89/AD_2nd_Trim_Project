@@ -80,5 +80,10 @@ public class Partido implements java.io.Serializable {
 	public void setDatosjugadorpartidos(Set datosjugadorpartidos) {
 		this.datosjugadorpartidos = datosjugadorpartidos;
 	}
-
+	
+	@Override
+	public String toString() {
+		String datos = "ID partido: " + getIdPartido() + " - ID equipo local: " + equipoByIdEquipoLocal.getIdEquipo() + " - Puntos local: " + getPuntosLocal() + " - ID equipo visitante: " + equipoByIdEquipoVisitante.getIdEquipo() + " - Puntos Visitante: " + getPuntosVisitante();
+		return datos;
+	}
 }

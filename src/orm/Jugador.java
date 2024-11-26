@@ -100,5 +100,10 @@ public class Jugador implements java.io.Serializable {
 	public void setDatosjugadorpartidos(Set datosjugadorpartidos) {
 		this.datosjugadorpartidos = datosjugadorpartidos;
 	}
-
+	
+	@Override
+	public String toString() {
+		String datos = "Nombre: " + getNombre() + " - Apellidos: " + getApellidos() + " - Edad: " + getEdad() + " - Nacionalidad: " + getNacionalidad() + " - Altura: " + getAlturaCm() + "cm - ID Jugador: " + getIdJugador() + " - ID Equipo: " + equipo.getIdEquipo();
+		return datos;
+	}
 }

@@ -100,5 +100,10 @@ public class Equipo implements java.io.Serializable {
 	public void setPartidosForIdEquipoLocal(Set partidosForIdEquipoLocal) {
 		this.partidosForIdEquipoLocal = partidosForIdEquipoLocal;
 	}
-
+	
+	@Override
+	public String toString() {
+		String datos = "Nombre: " + getNombre() + " - Localidad: " + getLocalidad() + " - Pais: " + getPais() + " - Nombre corto: " + getNombreCorto() + " - ID equipo: " + getIdEquipo();
+		return datos;
+	}
 }
