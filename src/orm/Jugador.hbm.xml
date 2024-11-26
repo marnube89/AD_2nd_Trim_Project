@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 26 nov 2024 13:22:35 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="baloncestohibernate" name="orm.Jugador" optimistic-lock="none" table="jugador">
+        <id name="idJugador" type="int">
+            <column name="idJugador"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="orm.Equipo" fetch="select" name="equipo">
+            <column name="idEquipo"/>
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column length="40" name="nombre"/>
+        </property>
+        <property name="apellidos" type="string">
+            <column length="40" name="apellidos"/>
+        </property>
+        <property name="alturaCm" type="java.lang.Integer">
+            <column name="alturaCM"/>
+        </property>
+        <property name="edad" type="java.lang.Integer">
+            <column name="edad"/>
+        </property>
+        <property name="nacionalidad" type="string">
+            <column length="50" name="nacionalidad"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="datosjugadorpartidos" table="datosjugadorpartido">
+            <key>
+                <column name="idJ" not-null="true"/>
+            </key>
+            <one-to-many class="orm.Datosjugadorpartido"/>
+        </set>
+    </class>
+</hibernate-mapping>

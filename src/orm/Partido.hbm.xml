@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 26 nov 2024 13:22:35 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="baloncestohibernate" name="orm.Partido" optimistic-lock="none" table="partido">
+        <id name="idPartido" type="int">
+            <column name="idPartido"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="orm.Equipo" fetch="select" name="equipoByIdEquipoVisitante">
+            <column name="idEquipoVisitante"/>
+        </many-to-one>
+        <many-to-one class="orm.Equipo" fetch="select" name="equipoByIdEquipoLocal">
+            <column name="idEquipoLocal"/>
+        </many-to-one>
+        <property name="puntosLocal" type="java.lang.Integer">
+            <column name="puntosLocal"/>
+        </property>
+        <property name="puntosVisitante" type="java.lang.Integer">
+            <column name="puntosVisitante"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="datosjugadorpartidos" table="datosjugadorpartido">
+            <key>
+                <column name="idP" not-null="true"/>
+            </key>
+            <one-to-many class="orm.Datosjugadorpartido"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 26 nov 2024 13:22:35 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="baloncestohibernate" name="orm.Equipo" optimistic-lock="none" table="equipo">
+        <id name="idEquipo" type="int">
+            <column name="idEquipo"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="nombre" type="string">
+            <column length="40" name="nombre"/>
+        </property>
+        <property name="localidad" type="string">
+            <column length="40" name="localidad"/>
+        </property>
+        <property name="pais" type="string">
+            <column length="40" name="pais"/>
+        </property>
+        <property name="nombreCorto" type="string">
+            <column length="20" name="nombreCorto"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="jugadors" table="jugador">
+            <key>
+                <column name="idEquipo"/>
+            </key>
+            <one-to-many class="orm.Jugador"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="partidosForIdEquipoVisitante" table="partido">
+            <key>
+                <column name="idEquipoVisitante"/>
+            </key>
+            <one-to-many class="orm.Partido"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="partidosForIdEquipoLocal" table="partido">
+            <key>
+                <column name="idEquipoLocal"/>
+            </key>
+            <one-to-many class="orm.Partido"/>
+        </set>
+    </class>
+</hibernate-mapping>

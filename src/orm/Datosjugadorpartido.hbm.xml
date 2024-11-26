@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 26 nov 2024 13:22:35 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="baloncestohibernate" name="orm.Datosjugadorpartido" optimistic-lock="none" table="datosjugadorpartido">
+        <composite-id class="orm.DatosjugadorpartidoId" name="id">
+            <key-property name="idJ" type="int">
+                <column name="idJ"/>
+            </key-property>
+            <key-property name="idP" type="int">
+                <column name="idP"/>
+            </key-property>
+        </composite-id>
+        <many-to-one class="orm.Jugador" fetch="select" insert="false" name="jugador" update="false">
+            <column name="idJ" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="orm.Partido" fetch="select" insert="false" name="partido" update="false">
+            <column name="idP" not-null="true"/>
+        </many-to-one>
+        <property name="valoracion" type="java.lang.Double">
+            <column name="valoracion" precision="22"/>
+        </property>
+        <property name="puntos" type="java.lang.Integer">
+            <column name="puntos"/>
+        </property>
+        <property name="asistencias" type="java.lang.Integer">
+            <column name="asistencias"/>
+        </property>
+        <property name="rebotes" type="java.lang.Integer">
+            <column name="rebotes"/>
+        </property>
+        <property name="tapones" type="java.lang.Integer">
+            <column name="tapones"/>
+        </property>
+        <property name="titular" type="java.lang.Boolean">
+            <column name="titular"/>
+        </property>
+    </class>
+</hibernate-mapping>
