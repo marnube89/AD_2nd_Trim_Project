@@ -1,7 +1,9 @@
 package classPkg;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -103,33 +105,50 @@ public class MetodosHibernate {
 		Scanner sc = new Scanner(System.in);
 		
 		do {
-			System.out.println("Introduce la ID de un jugador:");
-			idJ = sc.nextInt();
-			Jugador jTemp = s.load(Jugador.class, idJ);
-			System.out.println(jTemp.toString());
-			
-			//Estadisticas
-			System.out.println("Estadisticas:");
-
-			CriteriaBuilder cb = s.getCriteriaBuilder();
-			CriteriaQuery<Datosjugadorpartido> filtro2 = cb.createQuery(Datosjugadorpartido.class);
-			Root<Datosjugadorpartido> root = filtro2.from(Datosjugadorpartido.class);
-			filtro2.select(root).where(cb.equal(root.get("idJ"), jTemp.getIdJugador()));
-			
-			Query q = s.createQuery(filtro2);
-			
-			List<Datosjugadorpartido> l = q.getResultList();
-			
-			for(Datosjugadorpartido x : l) {
-				System.out.println(x.getPuntos());
-			}
-
-			
-			
 			try {
+				System.out.print("Introduce la ID de un jugador: ");
+				idJ = sc.nextInt();
+				Jugador jTemp = s.load(Jugador.class, idJ);
 				
+				System.out.println("\n------------------------\nDatos:\n\t"+jTemp.toString()+"\n------------------------");
+				
+			//Estadisticas
+				System.out.println("\n------------------------\nEstadisticas:");
+				
+			//Lectura de entradas de datosjugadorpartido a la que pertenece el jugador seleccionado
+				Set<Datosjugadorpartido> setTemp = jTemp.getDatosjugadorpartidos();
+				if(setTemp.isEmpty()) {
+					System.out.println("Este jugador taodavia no ha jugado ningun partido.");
+				}else {
+					
+				//Se guarada la suma de cada estadistica en las siguientes variables
+					int valoracion = 0,puntos=0,asistencias=0,rebotes=0,tapones=0,vecesTitular=0;
+					for(Datosjugadorpartido x : setTemp) {
+						
+						valoracion += x.getValoracion();
+						puntos += x.getPuntos();
+						asistencias += x.getAsistencias();
+						rebotes += x.getRebotes();
+						tapones += x.getTapones();
+						
+						//Se cuenta cuantas veces este jugador a sido titular
+						if(x.getTitular()) {
+							vecesTitular++;
+						}
+					}
+					//Muestra de estadisticas
+					System.out.println("\t-Valoracion: " + valoracion + "\n\t-Puntos: " + puntos + "\n\t-Asistencias: " + asistencias + "\n\t-Rebotes: " + rebotes + "\n\t-Tapones: " + tapones + "\n\t-Veces Titular: " + vecesTitular + "\n------------------------");
+				}
 			}catch(ObjectNotFoundException e) {
+				//En caso de no encontrar a ningun jugador se ejecutara la peticion de nuevo
+				idJ = 0;
 				System.out.println("Jugador no encontrado, pruebe de nuevo.");
+			}catch(InputMismatchException ex) {
+				//Igual que antes, pero se comprueba si el dato introducido no es un int
+				idJ = 0;
+				System.out.println("Formato incorrecto pruebe de nuevo.");
+				//Limpia el buffer recogiendo el dato incorrecto
+				sc.nextLine();
 			}
 			
 		}while(idJ == 0);
