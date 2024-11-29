@@ -28,7 +28,8 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		MetodosHibernate.pkSearch(s);
-		MetodosHibernate.datosJugador(s);
+//		MetodosHibernate.datosJugador(s);
+		MetodosHibernate.datosEquipo(s);
 		
 
 	}

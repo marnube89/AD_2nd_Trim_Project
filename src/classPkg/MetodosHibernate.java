@@ -1,5 +1,7 @@
 package classPkg;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -154,8 +156,47 @@ public class MetodosHibernate {
 		}while(idJ == 0);
 	}
 	
-	public static void datosEquipo(String id, Session s) {
-		
+	public static void datosEquipo(Session s) {
+		int idEquipo = 0;
+		Scanner sc = new Scanner(System.in);
+		do {
+			try {
+				//Busqueda
+				System.out.print("Introduce la id del equipo a consultar:");
+				idEquipo = sc.nextInt();
+				Equipo eTemp = s.load(Equipo.class, idEquipo);
+				//Datos equipo
+				System.out.println("Datos del equipo:\n"+eTemp.toString());
+				//Datos jugador y ordenacion
+				System.out.println("Jugadores del equipo:");
+				List<Jugador> jSet = new ArrayList<Jugador>();
+				jSet.addAll(eTemp.getJugadors());
+				jSet.sort(new Comparator<Jugador>() {
+
+					@Override
+					public int compare(Jugador o1, Jugador o2) {
+						if(o1.getAlturaCm()>o2.getAlturaCm()) {
+							return 1;
+						}else {
+							return 0;
+						}
+					}
+				});
+				//Muestreo jugadores
+				for(Jugador x : jSet) {
+					System.out.println("->" + x.getNombre() + " - " + x.getAlturaCm() + "cm");
+				}
+			}catch(ObjectNotFoundException e) {
+				idEquipo = 0;
+				System.out.println("Equipo no encontrado pruebe de nuevo:");
+			}catch(InputMismatchException ex) {
+				//Igual que antes, pero se comprueba si el dato introducido no es un int
+				idEquipo = 0;
+				System.out.println("Formato incorrecto pruebe de nuevo.");
+				//Limpia el buffer recogiendo el dato incorrecto
+				sc.nextLine();
+			}
+		}while(idEquipo==0);
 	}
 	
 	public static void anyInsert(Object datos, Session s) {
