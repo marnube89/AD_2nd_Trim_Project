@@ -29,7 +29,11 @@ public class Main {
 		// TODO Auto-generated method stub
 //		MetodosHibernate.pkSearch(s);
 //		MetodosHibernate.datosJugador(s);
-		MetodosHibernate.datosEquipo(s);
+//		MetodosHibernate.datosEquipo(s);
+//		MetodosHQL.datosPartido(s);
+//		MetodosHQL.datosValencia(s);
+//		MetodosHQL.mejoresJugadores(s);
+		MetodosHQL.estadisticasEquipo(s);
 		
 
 	}

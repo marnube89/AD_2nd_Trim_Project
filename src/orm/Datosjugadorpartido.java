@@ -9,7 +9,6 @@ public class Datosjugadorpartido implements java.io.Serializable {
 
 	private DatosjugadorpartidoId id;
 	private Jugador jugador;
-	private int idJ;
 	private Partido partido;
 	private Double valoracion;
 	private Integer puntos;
@@ -112,12 +111,5 @@ public class Datosjugadorpartido implements java.io.Serializable {
 		this.titular = titular;
 	}
 
-	private int getIdJ() {
-		return idJ;
-	}
-
-	private void setIdJ(int idJ) {
-		this.idJ = jugador.getIdJugador();
-	}
 
 }
