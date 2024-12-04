@@ -94,7 +94,7 @@ public class MetodosHQL {
 		
 		//Muestreo de los jugadores
 		System.out.println("Jugadores Local:\t\tJugadores Visitante:\n");
-		for(int i = 0; i<5; i++) {
+		for(int i = 0; i<10; i++) {
 			Jugador jugadorL = jLocal_partidoDisputado.get(i);
 			Jugador jugadorV = jVisit_partidoDisputado.get(i);
 			String tabulaciones = "\t\t\t";
