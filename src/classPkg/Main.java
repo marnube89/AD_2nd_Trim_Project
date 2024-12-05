@@ -34,6 +34,7 @@ public class Main {
 //		MetodosHQL.datosValencia(s);
 //		MetodosHQL.mejoresJugadores(s);
 //		MetodosHQL.estadisticasEquipo(s);
+		MetodosHQL.datosJugador(s);
 		
 
 	}

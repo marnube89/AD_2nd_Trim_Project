@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import javax.persistence.NoResultException;
@@ -202,7 +204,93 @@ public class MetodosHQL {
 	}
 
 	public static void datosJugador(Session s) {
-		//Queda TODO
+		session = s;
+		
+		Scanner sc = new Scanner(System.in);
+		int idJugador = 0;
+		do {
+			try {
+				//Pedimos al usuario el ID del jugador a consultar
+				System.out.print("Introduce el id de un jugador: ");
+				idJugador = sc.nextInt();
+				//Realizamos la consulta y la guardamos en un objeto
+				Query qJugador = session.createQuery("FROM Jugador WHERE idJugador = :paramID").setParameter("paramID", idJugador);
+				Jugador jugadorTemp = (Jugador) qJugador.getSingleResult();
+				
+				//Almacenamos los datos de todos los partidos donde a participado el jugador
+				Set<Datosjugadorpartido> sDatosPartidos = jugadorTemp.getDatosjugadorpartidos();
+				//Se crean dos listas para almacenar los partidos dependiendo de si fue titular o no
+				ArrayList<Datosjugadorpartido> lPartidosTitular = new ArrayList<Datosjugadorpartido>();
+				ArrayList<Datosjugadorpartido> lPartidosSuplente = new ArrayList<Datosjugadorpartido>();
+				//Se recorre el set y se almacenan los datos en sus respectivas listas
+				for(Datosjugadorpartido x : sDatosPartidos) {
+					if(x.getTitular()) {
+						lPartidosTitular.add(x);
+					}else {
+						lPartidosSuplente.add(x);
+					}
+				}
+				
+				float valoracion=0,asistencias=0,puntos=0,rebotes=0,tapones=0, iteraciones=0;
+				//Muestreo de los datos de los partidos donde fue titular
+				System.out.println("Partidos donde fue titular: ");
+				for (Datosjugadorpartido x : lPartidosTitular) {
+					iteraciones++;
+					valoracion += x.getValoracion();
+					asistencias += x.getAsistencias();
+					puntos += x.getPuntos();
+					rebotes += x.getRebotes();
+					tapones += x.getTapones();
+					System.out.println(x.toString()+"\n");
+				}
+				System.out.println("Media como titular:\n"
+						+ "Puntos: " + (puntos/iteraciones)
+						+ "\nAsistencias: " + (asistencias/iteraciones)
+						+ "\nRebotes: " + (rebotes/iteraciones)
+						+ "\nTapones: " + (tapones/iteraciones)
+						+ "\nValoracion: " + (valoracion/iteraciones));
+				System.out.println("-----------------------------------\n");
+				
+				valoracion=0;
+				asistencias=0;
+				puntos=0;
+				rebotes=0;
+				tapones=0;
+				iteraciones=0;
+				System.out.println("Partidos donde fue suplente: ");
+				for (Datosjugadorpartido x : lPartidosSuplente) {
+					iteraciones++;
+					valoracion += x.getValoracion();
+					asistencias += x.getAsistencias();
+					puntos += x.getPuntos();
+					rebotes += x.getRebotes();
+					tapones += x.getTapones();
+					System.out.println(x.toString()+"\n");
+				}
+				System.out.println("Media como suplente:\n"
+						+ "Puntos: " + (puntos/iteraciones)
+						+ "\nAsistencias: " + (asistencias/iteraciones)
+						+ "\nRebotes: " + (rebotes/iteraciones)
+						+ "\nTapones: " + (tapones/iteraciones)
+						+ "\nValoracion: " + (valoracion/iteraciones));
+				System.out.println("-----------------------------------\n");
+				
+			}catch(NoResultException e) {
+				//En caso de no encontrar a ningun partido se ejecutara la peticion de nuevo
+				idJugador = 0;
+				System.out.println("Jugador no encontrado, pruebe de nuevo.");
+			}catch(InputMismatchException ex) {
+				//Igual que antes, pero se comprueba si el dato introducido no es un int
+				idJugador = 0;
+				System.out.println("Formato incorrecto pruebe de nuevo.");
+				//Limpia el buffer recogiendo el dato incorrecto
+				sc.nextLine();
+			}
+			
+		}while(idJugador == 0);
+		
+		
+		
 	}
 	
 	public static void estadisticasEquipo(Session s) {

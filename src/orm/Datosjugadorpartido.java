@@ -111,5 +111,9 @@ public class Datosjugadorpartido implements java.io.Serializable {
 		this.titular = titular;
 	}
 
-
+	@Override
+	public String toString() {
+		String datos = "ID Partido: " + partido.getIdPartido() + " -- Jugador: " + jugador.getNombre()+ " " + jugador.getApellidos() + " -- Valoracion: " + valoracion + " -- Puntos: " + puntos + " -- Asistencias: " + asistencias + " -- Rebotes: " + rebotes + " -- Tapones: " + tapones + " -- Fue titular: " + titular;
+		return datos;
+	}
 }
