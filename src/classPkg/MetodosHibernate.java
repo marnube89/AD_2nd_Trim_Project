@@ -16,8 +16,6 @@ import orm.*;
 public class MetodosHibernate {
 	private static Session session;
 	
-	//Queda por saber si esta sera la implementacion definitiva, a la espera
-	// de la respuesta de Miguel
 	public static void pkSearch(Session s){
 		session = s;
 		
@@ -42,17 +40,17 @@ public class MetodosHibernate {
 			case "1": //Equipo
 				info = "equipo";
 				infoCls = Equipo.class;
-				searchAux(sc, s, info, infoCls);
+				System.out.println(searchAux(sc, s, info, infoCls).toString());
 				break;
 			case "2": //Jugador
 				info = "jugador";
 				infoCls = Jugador.class;
-				searchAux(sc, s, info, infoCls);
+				System.out.println(searchAux(sc, s, info, infoCls).toString());
 				break;
 			case "3": //Partido
 				info = "partido";
 				infoCls = Partido.class;
-				searchAux(sc, s, info, infoCls);
+				System.out.println(searchAux(sc, s, info, infoCls).toString());
 				break;
 			case "4": //DatosJugadorPartido TODO implementar seleccion de PK multiple
 				break;
@@ -74,80 +72,63 @@ public class MetodosHibernate {
 	
 	//Realiza una consulta que se guarda en un objeto temporal el cual es casteado a la clase de
 	// la tabla que deseemos usar, mostrando posteriormente sus datos por consola.
-	private static void searchAux(Scanner sc, Session s, String info, Class infoCls) {
+	private static Object searchAux(Scanner sc, Session s, String info, Class infoCls) {
 		boolean found = false;
 		Object oTemp = null;
 		do {
 			System.out.println("Introduce la id del "+info+":");
-			int pkTemp = sc.nextInt();
+			int pkTemp;
 			try {
+				pkTemp = sc.nextInt();
 				oTemp = s.load(infoCls, pkTemp);
+				//Cuando no encuentra nada, llena un objeto con datos null, al hacer el toString fuerzo el ObjectNotFoundException
+				oTemp.toString();
 				
-				//Se realiza un casteo a la clase pasada como parametro para obtener la implementacion
-				// del toString de la clase deseada.
-				System.out.println(infoCls.cast(oTemp).toString());
 				found = true;
+
 			}catch(ObjectNotFoundException e) {
 				System.out.println("La id introducida no corresponde a ningun "+info+".");
+			}catch(InputMismatchException ex) {
+				//Igual que antes, pero se comprueba si el dato introducido no es un int
+				System.out.println("Formato incorrecto pruebe de nuevo.");
+				//Limpia el buffer recogiendo el dato incorrecto
+				sc.nextLine();
 			}
 		}while(!found);
 		
-		//Se elimina el objeto para ahorrar espacion en memoria
-		oTemp = null;
+		return oTemp;
 	}
 	
 	public static void datosJugador(Session s) {
 		int idJ = 0;
 		Scanner sc = new Scanner(System.in);
 		
-		do {
-			try {
-				System.out.print("Introduce la ID de un jugador: ");
-				idJ = sc.nextInt();
-				Jugador jTemp = s.load(Jugador.class, idJ);
-				
-				System.out.println("\n------------------------\nDatos:\n\t"+jTemp.toString()+"\n------------------------");
-				
-			//Estadisticas
-				System.out.println("\n------------------------\nEstadisticas:");
-				
-			//Lectura de entradas de datosjugadorpartido a la que pertenece el jugador seleccionado
-				Set<Datosjugadorpartido> setTemp = jTemp.getDatosjugadorpartidos();
-				if(setTemp.isEmpty()) {
-					System.out.println("Este jugador taodavia no ha jugado ningun partido.");
-				}else {
-					
-				//Se guarada la suma de cada estadistica en las siguientes variables
-					int valoracion = 0,puntos=0,asistencias=0,rebotes=0,tapones=0,vecesTitular=0;
-					for(Datosjugadorpartido x : setTemp) {
-						
-						valoracion += x.getValoracion();
-						puntos += x.getPuntos();
-						asistencias += x.getAsistencias();
-						rebotes += x.getRebotes();
-						tapones += x.getTapones();
-						
-						//Se cuenta cuantas veces este jugador a sido titular
-						if(x.getTitular()) {
-							vecesTitular++;
-						}
-					}
-					//Muestra de estadisticas
-					System.out.println("\t-Valoracion: " + valoracion + "\n\t-Puntos: " + puntos + "\n\t-Asistencias: " + asistencias + "\n\t-Rebotes: " + rebotes + "\n\t-Tapones: " + tapones + "\n\t-Veces Titular: " + vecesTitular + "\n------------------------");
-				}
-			}catch(ObjectNotFoundException e) {
-				//En caso de no encontrar a ningun jugador se ejecutara la peticion de nuevo
-				idJ = 0;
-				System.out.println("Jugador no encontrado, pruebe de nuevo.");
-			}catch(InputMismatchException ex) {
-				//Igual que antes, pero se comprueba si el dato introducido no es un int
-				idJ = 0;
-				System.out.println("Formato incorrecto pruebe de nuevo.");
-				//Limpia el buffer recogiendo el dato incorrecto
-				sc.nextLine();
+		Jugador jTemp = (Jugador) searchAux(sc, s, "jugador", Jugador.class);
+		
+		System.out.println("\n------------------------\nDatos:\n\t"+jTemp.toString()+"\n------------------------");
+		
+		//Estadisticas
+		System.out.println("\n------------------------\nEstadisticas:\n");
+		
+		//Lectura de entradas de datosjugadorpartido a la que pertenece el jugador seleccionado
+		Set<Datosjugadorpartido> setTemp = jTemp.getDatosjugadorpartidos();
+		if(setTemp.isEmpty()) {
+			System.out.println("Este jugador taodavia no ha jugado ningun partido.");
+		}else {
+			//Se muestran los datos
+			ArrayList<Datosjugadorpartido> list = new ArrayList<Datosjugadorpartido>();
+			list.addAll(setTemp);
+			list.sort(Comparator.comparingDouble(value -> ((Datosjugadorpartido) value).getValoracion())
+					.thenComparingInt(value -> ((Datosjugadorpartido) value).getPuntos()).reversed()
+					.thenComparingInt(value -> ((Datosjugadorpartido) value).getAsistencias()).reversed()
+					.thenComparingInt(value -> ((Datosjugadorpartido) value).getRebotes()).reversed()
+					);
+			for(Datosjugadorpartido x : list) {
+				System.out.println(x.toString()+ "\n");
 			}
-			
-		}while(idJ == 0);
+			System.out.println("------------------------\n");
+
+		}
 	}
 	
 	public static void datosEquipo(Session s) {

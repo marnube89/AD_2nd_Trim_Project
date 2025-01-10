@@ -30,13 +30,17 @@ public class Main {
 //		MetodosHibernate.pkSearch(s);
 //		MetodosHibernate.datosJugador(s);
 //		MetodosHibernate.datosEquipo(s);
+		//Hacer metodo que me falta
+
+		
 //		MetodosHQL.datosPartido(s);
 //		MetodosHQL.datosValencia(s);
 //		MetodosHQL.mejoresJugadores(s);
+//		MetodosHQL.datosJugador(s);
 //		MetodosHQL.estadisticasEquipo(s);
-		MetodosHQL.datosJugador(s);
+		//Hacer metodo que me falta
 		
-
+		//Hacer metodo de xPath
 	}
 
 }

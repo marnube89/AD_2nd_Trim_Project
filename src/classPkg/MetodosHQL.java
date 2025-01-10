@@ -55,57 +55,46 @@ public class MetodosHQL {
 			}
 			
 		}while(argsPartido == 0);
-		
-
-		//Jugadores del equipo local que han participado en el partido
 		Equipo eLocal = partido.getEquipoByIdEquipoLocal();
-		
-		Set<Jugador> jugadoresLocal = eLocal.getJugadors();
-		ArrayList<Jugador> jLocal_partidoDisputado =new ArrayList<Jugador>();
-		
-		for(Jugador x : jugadoresLocal) {
-			Set<Datosjugadorpartido> datosTemp = x.getDatosjugadorpartidos();
-			for(Datosjugadorpartido y : datosTemp) {
-				if(y.getPartido().getIdPartido() == argsPartido) {
-					jLocal_partidoDisputado.add(x);
-					break;
-				}
-			}
-		}
-		
-		//Jugadores del equipo visitante que han participado en el partido
 		Equipo eVisit = partido.getEquipoByIdEquipoVisitante();
 		
-		Set<Jugador> jugadoresVisit = eVisit.getJugadors();
-		ArrayList<Jugador> jVisit_partidoDisputado =new ArrayList<Jugador>();
-		
-		for(Jugador x : jugadoresVisit) {
-			Set<Datosjugadorpartido> datosTemp = x.getDatosjugadorpartidos();
-			for(Datosjugadorpartido y : datosTemp) {
-				if(y.getPartido().getIdPartido() == argsPartido) {
-					jVisit_partidoDisputado.add(x);
-					break;
-				}
-			}
-		}
 		//Cabecera
 		System.out.println("=====================================\n");
 		System.out.println("Local: " + eLocal.getNombre()+ " -- " + partido.getPuntosLocal() + " Puntos");
 		System.out.println("Visitante: " + eVisit.getNombre()+ " -- " + partido.getPuntosVisitante() + " Puntos");
 		System.out.println("\n=====================================\n");
 		
-		//Muestreo de los jugadores
-		System.out.println("Jugadores Local:\t\tJugadores Visitante:\n");
-		for(int i = 0; i<10; i++) {
-			Jugador jugadorL = jLocal_partidoDisputado.get(i);
-			Jugador jugadorV = jVisit_partidoDisputado.get(i);
-			String tabulaciones = "\t\t\t";
-			
-			if(jugadorL.getApellidos().length()>10 || jugadorL.getNombre().length()>10) {
-				tabulaciones = "\t\t";
+
+		//Jugadores del equipo local que han participado en el partido
+		
+		Set<Jugador> jugadoresLocal = eLocal.getJugadors();
+		
+		System.out.println("Equipo Local:\n");
+		for(Jugador x : jugadoresLocal) {
+			Set<Datosjugadorpartido> datosTemp = x.getDatosjugadorpartidos();
+			for(Datosjugadorpartido y : datosTemp) {
+				if(y.getPartido().equals(partido)) {
+					System.out.println(y.toString()+"\n");
+				}
 			}
-			System.out.println(jugadorL.getNombre()+" "+jugadorL.getApellidos()+tabulaciones+jugadorV.getNombre()+" "+jugadorV.getApellidos());
 		}
+		
+		//Jugadores del equipo visitante que han participado en el partido
+		
+		Set<Jugador> jugadoresVisit = eVisit.getJugadors();
+		
+		System.out.println("Equipo Visitante:\n");
+		for(Jugador x : jugadoresVisit) {
+			Set<Datosjugadorpartido> datosTemp = x.getDatosjugadorpartidos();
+			for(Datosjugadorpartido y : datosTemp) {
+				if(y.getPartido().equals(partido)) {
+					System.out.println(y.toString()+"\n");
+				}
+			}
+		}
+		
+
+		
 		
 	//FinMetodo	
 	}
@@ -219,62 +208,24 @@ public class MetodosHQL {
 				
 				//Almacenamos los datos de todos los partidos donde a participado el jugador
 				Set<Datosjugadorpartido> sDatosPartidos = jugadorTemp.getDatosjugadorpartidos();
-				//Se crean dos listas para almacenar los partidos dependiendo de si fue titular o no
-				ArrayList<Datosjugadorpartido> lPartidosTitular = new ArrayList<Datosjugadorpartido>();
-				ArrayList<Datosjugadorpartido> lPartidosSuplente = new ArrayList<Datosjugadorpartido>();
-				//Se recorre el set y se almacenan los datos en sus respectivas listas
+				
+				//Muestreo de los datos de los partidos donde fue titular
+				System.out.println("Partidos donde fue titular: \n");
 				for(Datosjugadorpartido x : sDatosPartidos) {
 					if(x.getTitular()) {
-						lPartidosTitular.add(x);
-					}else {
-						lPartidosSuplente.add(x);
+						System.out.println(x.toString()+"\n");
 					}
 				}
 				
-				float valoracion=0,asistencias=0,puntos=0,rebotes=0,tapones=0, iteraciones=0;
-				//Muestreo de los datos de los partidos donde fue titular
-				System.out.println("Partidos donde fue titular: ");
-				for (Datosjugadorpartido x : lPartidosTitular) {
-					iteraciones++;
-					valoracion += x.getValoracion();
-					asistencias += x.getAsistencias();
-					puntos += x.getPuntos();
-					rebotes += x.getRebotes();
-					tapones += x.getTapones();
-					System.out.println(x.toString()+"\n");
-				}
-				System.out.println("Media como titular:\n"
-						+ "Puntos: " + (puntos/iteraciones)
-						+ "\nAsistencias: " + (asistencias/iteraciones)
-						+ "\nRebotes: " + (rebotes/iteraciones)
-						+ "\nTapones: " + (tapones/iteraciones)
-						+ "\nValoracion: " + (valoracion/iteraciones));
 				System.out.println("-----------------------------------\n");
 				
-				valoracion=0;
-				asistencias=0;
-				puntos=0;
-				rebotes=0;
-				tapones=0;
-				iteraciones=0;
-				System.out.println("Partidos donde fue suplente: ");
-				for (Datosjugadorpartido x : lPartidosSuplente) {
-					iteraciones++;
-					valoracion += x.getValoracion();
-					asistencias += x.getAsistencias();
-					puntos += x.getPuntos();
-					rebotes += x.getRebotes();
-					tapones += x.getTapones();
-					System.out.println(x.toString()+"\n");
-				}
-				System.out.println("Media como suplente:\n"
-						+ "Puntos: " + (puntos/iteraciones)
-						+ "\nAsistencias: " + (asistencias/iteraciones)
-						+ "\nRebotes: " + (rebotes/iteraciones)
-						+ "\nTapones: " + (tapones/iteraciones)
-						+ "\nValoracion: " + (valoracion/iteraciones));
-				System.out.println("-----------------------------------\n");
-				
+				//Muestreo de los datos de los partidos donde fue suplente
+				System.out.println("Partidos donde fue suplente: \n");
+				for(Datosjugadorpartido x : sDatosPartidos) {
+					if(!x.getTitular()) {
+						System.out.println(x.toString()+"\n");
+					}
+				}	
 			}catch(NoResultException e) {
 				//En caso de no encontrar a ningun partido se ejecutara la peticion de nuevo
 				idJugador = 0;
@@ -306,25 +257,51 @@ public class MetodosHQL {
 				Query qEquipo = s.createQuery("FROM Equipo WHERE idEquipo = :paramEquipo").setParameter("paramEquipo", idEquipo).setReadOnly(true);
 				
 				Equipo equipoTemp = (Equipo) qEquipo.getSingleResult();
+				List<Partido> partidos = new ArrayList<Partido>();
+				partidos.addAll(equipoTemp.getPartidosForIdEquipoLocal());
 				
-				System.out.println("Partidos como Local: ");
+				float puntosVisitante = 0, puntosLocal = 0, puntosFavor = 0, puntosContra = 0, ganados = 0;
+				
+				System.out.println("\nResumen Partidos como Local: \n");
 				if(equipoTemp.getPartidosForIdEquipoLocal().isEmpty()) {
 					System.out.println("Este equipo no a jugado como local");
 				}else {
-					Set<Partido> partidosLocal = equipoTemp.getPartidosForIdEquipoLocal();
-					for(Partido x : partidosLocal) {
-						System.out.println(x);
+					for(Partido x : partidos) {
+						puntosLocal+=x.getPuntosLocal();
+						puntosFavor = x.getPuntosLocal()-x.getPuntosVisitante();
+						if(puntosFavor<0) {
+							puntosContra=puntosFavor*-1;
+							puntosFavor = 0;
+						}else {
+							ganados++;
+						}
 					}
+					System.out.println("Puntos: " + puntosLocal + "\nPuntos a favor: " + puntosFavor + "\nPuntos en contra: " + puntosContra + "\nPartidos Ganados: " + ganados);
+					partidos.removeAll(partidos);
 				}
+				puntosFavor=0;
+				puntosContra=0;
+				ganados=0;
 				
-				System.out.println("\nPartidos como Visitante: ");
+				partidos.addAll(equipoTemp.getPartidosForIdEquipoVisitante());
+				
+				System.out.println("\nResumen Partidos como Visitante: \n");
 				if(equipoTemp.getPartidosForIdEquipoVisitante().isEmpty()) {
 					System.out.println("Este equipo no a jugado como visitante");
 				}else {
-					Set<Partido> partidosVisitante = equipoTemp.getPartidosForIdEquipoVisitante();
-					for(Partido y : partidosVisitante) {
-						System.out.println(y);
+					for(Partido y : partidos) {
+						puntosVisitante+=y.getPuntosVisitante();
+						puntosLocal+= y.getPuntosVisitante();
+						puntosFavor = y.getPuntosVisitante()-y.getPuntosLocal();
+						if(puntosFavor<0) {
+							puntosContra = puntosFavor*-1;
+							puntosFavor = 0;
+						}else {
+							ganados++;
+						}
 					}
+					System.out.println("Puntos: " + puntosVisitante + "\nPuntos a favor: " + puntosFavor + "\nPuntos en contra: " + puntosContra + "\nPartidos Ganados: " + ganados);
+					partidos.removeAll(partidos);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
