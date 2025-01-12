@@ -30,7 +30,7 @@ public class Main {
 //		MetodosHibernate.pkSearch(s);
 //		MetodosHibernate.datosJugador(s);
 //		MetodosHibernate.datosEquipo(s);
-		//Hacer metodo que me falta
+//		MetodosHibernate.anyInsert(s);
 
 		
 //		MetodosHQL.datosPartido(s);
@@ -38,9 +38,10 @@ public class Main {
 //		MetodosHQL.mejoresJugadores(s);
 //		MetodosHQL.datosJugador(s);
 //		MetodosHQL.estadisticasEquipo(s);
-		//Hacer metodo que me falta
+//		MetodosHQL.clasificacionLiga(s);
 		
-		//Hacer metodo de xPath
+		
+//		MetodosXPath.searchByQuery("/ColeccionPruebas");
 	}
 
 }
