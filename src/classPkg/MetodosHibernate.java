@@ -200,16 +200,16 @@ public class MetodosHibernate {
 			opcion = sc.next();
 			switch (opcion) {
 			case "1":
-				createJugador(s);
+				s.save(createJugador(s));
 				break;
 			case "2":
-				createEquipo(s);
+				s.save(createEquipo(s));
 				break;
 			case "3":
-				createPartido(s);
+				s.save(createPartido(s));
 				break;
 			case "4":
-				createDatosjugador(s);
+				s.save(createDatosjugador(s));
 				break;
 			default:
 				System.out.println("Opcion invalida pruebe de nuevo");
