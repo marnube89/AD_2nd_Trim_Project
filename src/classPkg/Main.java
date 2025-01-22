@@ -41,7 +41,11 @@ public class Main {
 //		MetodosHQL.clasificacionLiga(s);
 		
 		
-//		MetodosXPath.searchByQuery("/ColeccionPruebas");
+//		MetodosXPath.buscarConsulta("/ColeccionPruebas");
+//		MetodosXPath.infoJugadores();
+//		MetodosXPath.infoPartidos();
+//		MetodosXPath.jugadoresEquipo();
+		MetodosXPath.obtenerJugadorValoracionMasAlta();
 	}
 
 }
