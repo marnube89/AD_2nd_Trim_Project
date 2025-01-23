@@ -3,6 +3,7 @@
  */
 package classPkg;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -11,9 +12,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.persistence.PersistenceException;
 
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import orm.*;
 
@@ -172,9 +175,9 @@ public class MetodosHibernate {
 			@Override
 			public int compare(Jugador o1, Jugador o2) {
 				if(o1.getAlturaCm()>o2.getAlturaCm()) {
-					return 1;
-				}else {
 					return -1;
+				}else {
+					return 1;
 				}
 			}
 		});
@@ -194,22 +197,31 @@ public class MetodosHibernate {
 		System.out.println("Elige que entrada deseas crear:\n"
 				+ "1. Jugador\n"
 				+ "2. Equipo\n"
-				+ "4. Partido");
+				+ "3. Partido\n"
+				+ "4. DatosJugadorPartido");
 		
 		do {
 			opcion = sc.next();
 			switch (opcion) {
 			case "1":
 				s.save(createJugador(s));
+				s.beginTransaction().commit();
 				break;
 			case "2":
 				s.save(createEquipo(s));
+				s.beginTransaction().commit();
 				break;
 			case "3":
 				s.save(createPartido(s));
+				s.beginTransaction().commit();
 				break;
 			case "4":
-				s.save(createDatosjugador(s));
+				try {
+					s.save(createDatosjugador(s));
+					s.beginTransaction().commit();
+				} catch (PersistenceException e) {
+					System.out.println("IDs invalidas, no se pudieron agreagar los datos");
+				}
 				break;
 			default:
 				System.out.println("Opcion invalida pruebe de nuevo");
@@ -329,6 +341,7 @@ public class MetodosHibernate {
 					equipo = (Equipo) searchAux(sc, s, "equipo", Equipo.class);
 				} else {
 					equipo = createEquipo(s);
+					s.save(equipo);
 				}
 				formatoCorrecto = true;
 			} else {
@@ -430,8 +443,8 @@ public class MetodosHibernate {
 		Scanner sc = new Scanner(System.in);
 		boolean breakPoint = false;
 		
-		Jugador jugador = (Jugador) searchAux(sc, session, "jugador", Jugador.class);
-		Partido partido = (Partido) searchAux(sc, session, "Partido", Partido.class);
+		Jugador jugador = (Jugador) searchAux(sc, s, "jugador", Jugador.class);
+		Partido partido = (Partido) searchAux(sc, s, "Partido", Partido.class);
 		
 		
 		double valoracion = 0;

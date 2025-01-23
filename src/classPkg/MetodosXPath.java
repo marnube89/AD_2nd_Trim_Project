@@ -24,6 +24,7 @@ public class MetodosXPath {
 	public static void buscarConsulta(String nomCol) {
 		Scanner sc = new Scanner(System.in);
 		//Peticion de datos
+		System.out.println("Coleccion seleccionada: " + nomCol);
 		System.out.println("Introduce tu consulta: ");
 		String query = sc.nextLine();
 		ejecutarConsulta(nomCol, query);
