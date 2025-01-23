@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import orm.*;
 
-public class Main {
+public class Practica_2ev {
 	private static final SessionFactory sessionFactory;
 	private static final Session s;
 	
