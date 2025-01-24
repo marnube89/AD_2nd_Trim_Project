@@ -64,6 +64,30 @@ public class MetodosHibernate {
 				System.out.println(searchAux(sc, s, info, infoCls).toString());
 				break;
 			case "4": //DatosJugadorPartido TODO implementar seleccion de PK multiple
+				boolean found = false;
+				Datosjugadorpartido oTemp = null;
+				do {
+					int idP, idJ;
+					try {
+						System.out.println("Introduce la id del Partido:");
+						idP = sc.nextInt();
+						System.out.println("Introduce la id del Jugador:");
+						idJ = sc.nextInt();
+						DatosjugadorpartidoId temp = new DatosjugadorpartidoId(idJ, idP);
+						oTemp = s.load(Datosjugadorpartido.class, temp);
+						System.out.println("\nDATOS DEL JUGADOR:\n"+oTemp.toString());;
+						
+						found = true;
+
+					}catch(ObjectNotFoundException e) {
+						System.out.println("Datos no encontrados.");
+					}catch(InputMismatchException ex) {
+						//Igual que antes, pero se comprueba si el dato introducido no es un int
+						System.out.println("Formato incorrecto pruebe de nuevo.");
+						//Limpia el buffer recogiendo el dato incorrecto
+						sc.nextLine();
+					}
+				}while(!found);
 				break;
 			case "s":
 				System.out.println("Saliste con exito");
@@ -75,7 +99,6 @@ public class MetodosHibernate {
 				opcion = "";
 			}
 		}while(opcion.isEmpty());
-		sc.close();
 	}
 	
 	
